@@ -25,7 +25,7 @@ class Solution:
             # col_end + 1 is necesssary to iterate over the full range since the end of the range is noninclusive
             for i in range(col_begin,col_end+1):
                 res.append(matrix[row_begin][i])
-            # after processsing the top row, it increments the row_begin, effectively restricting the boundaries such that the top wont be processed anymore
+            # after processing the top row, it increments the row_begin, effectively restricting the boundaries such that the top wont be processed anymore
             row_begin += 1
 
             # iterate over the right COLUMN, which uses the newly incremented top restriction (row_begin) and bottom restriction to append all values into the list
