@@ -42,7 +42,7 @@ class Solution:
             #second half curr becomes first half's curr.next
             firstTemp.next = second
             #first half's original curr.next becomes second half curr's next
-            secondTemp.next = temp1
+            secondTemp.next = temp
             # this is where firstTemp is used to update the "first" pointer
             # this is where secondTemp is used to update the "second" pointer
             first, second = firstTemp, secondTemp
