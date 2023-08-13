@@ -12,14 +12,11 @@ class Solution:
         if currDiam > self.maxDiam:
             self.maxDiam = currDiam
         return max(left, right) + 1
-        
 
     def diameterOfBinaryTree(self, root):
         self.maxDiam = 0
         self.diameterCalc(root)
         return self.maxDiam
-
-
 
 '''
 STANDARD TREE QUESTION FORMAT
