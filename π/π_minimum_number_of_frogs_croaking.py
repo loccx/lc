@@ -16,7 +16,9 @@ class Solution:
             if char not in count:
                 return -1
             count[char] += 1
-            if count['c'] < count['r'] or count['r'] < count['o'] or count['o'] < count['u'] or count['u'] < count['n'] or count['n'] < count['t']:
+            if count['c'] < count['r'] or count['r'] < count['o'] or count['o'] < count['a'] or count['a'] < count['k']:
                 return -1
-            answer = max(answer, count['c'] - count['t'])
-        return answer
+            answer = max(answer, count['c'] - count['k'])
+        if count['c'] == count['r'] == count['o'] == count['a'] == count['k']:
+            return answer
+        return -1
