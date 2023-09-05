@@ -33,6 +33,13 @@ def cloneGraph(self, node: 'Node') -> 'Node':
         # after making recursive calls to the each node's link, return the copied node if it wasn't already existing.
         # if it existed already, it wouldn't have been copied anyways, it would just be returned from the hashmap
         return copy 
-    
+
     #return the recursive call
     return clone(node)
+
+'''
+1 -- 0
+|    |
+|    |
+0 -- 0
+'''
