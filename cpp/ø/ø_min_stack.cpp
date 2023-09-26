@@ -2,6 +2,30 @@ class MinStack {
 private:
     vector<int> stack;
     vector<int> min;
+    int minItem;
+
+public:
+    MinStack() {}
+
+    void push(int val) {
+        it ()
+    }
+
+    void pop() {
+    }
+
+    int top() {
+    }
+
+    int getMin() {
+    }
+}
+
+/*
+class MinStack {
+private:
+    vector<int> stack;
+    vector<int> min;
 
 int minItem;
 public:
@@ -27,7 +51,7 @@ public:
         return min.back();
     }
 };
-
+*/
 /**
  * Your MinStack object will be instantiated and called as such:
  * MinStack* obj = new MinStack();
