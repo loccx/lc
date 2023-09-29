@@ -1,0 +1,5 @@
+CFLAGS = -Wall -Wextra -Werror -std=gnu++20
+%: %.cpp
+	g++ $(CFLAGS) $< -o $(basename $@)
+	./$(basename $@)
+	rm $(basename $@)
