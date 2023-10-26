@@ -1,0 +1,9 @@
+CFLAGS = -Wall -std=gnu++17 -Dsolutio
+%: %.cpp
+	g++ $(CFLAGS) $< -o $(basename $@)
+	./$(basename $@)
+	rm $(basename $@)
+
+# g++ -Wall -std=gnu++17
+# time ./
+# rm 
