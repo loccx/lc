@@ -102,8 +102,7 @@ void Bank::withdraw(ll id, double amount) {
         cout << "The ID you entered does not exist.\n";
         return;
     }
-    accounts[id].withdraw(amount);
-    reserves -= amount;
+    if (accounts[id].withdraw(amount)) reserves -= amount;
 }
 
 void Bank::transfer(ll source, ll destination, double amount) {
