@@ -21,6 +21,7 @@ public:
 #endif
         if(i==n){
             result.push_back(nums);
+            printVec(result);
             return ;
         }
 
@@ -36,6 +37,7 @@ public:
         return result;
     }
 };
+
 int main() {
     vector<int> input = {1, 2, 3};
     Solution test;
