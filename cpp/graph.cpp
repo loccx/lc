@@ -3,6 +3,7 @@
 #include <queue>
 #include <list>
 #include <stack>
+#include <unordered_set>
 #include <iomanip>
 #include <unordered_map>
 
@@ -16,10 +17,8 @@ class graph {
         void addEdge(int from, int to);
         bool hasEdge(int i, int j) const;
         void display() const;
-        vector<bool> bfs(int source) const;
-        bool isValidPath(const vector<int> & path) const;
-        bool isReachable(int source, int dest)const;
-        vector<int> findShortestPath(int src, int dest);
+        void bfs(int source);
+        void dfs(int source);
 
     private:
         unordered_map<int, list<int>> adjlist;
@@ -27,8 +26,8 @@ class graph {
 
 
 void graph::addEdge(int from, int to){
-    adjlist[from].push_back(to);
-    adjlist[to].push_back(from);
+    adjlist[from].emplace_back(to);
+    adjlist[to].emplace_back(from);
 }
 
 bool graph::hasEdge(int from, int to) const {
@@ -46,62 +45,61 @@ void graph::display() const {
     }
 }
 
-vector<int> graph::findShortestPath(int src, int dest) {
-    stack s;
-    s.push(src);
-    vector<int> path;
-    set<bool> v;
-
-    int curr;
-    while (s) {
-        curr = s.top();
-        s.pop();
-        for (auto t : adjlist[curr]) {
-        }
-
+#ifdef DEBUG
+void p_set(unordered_set<int>& st) {
+    for (auto s : st) {
+        cout << s << " ";
     }
+    cout << '\n';
 }
+#endif
 
-/*
-bool graph::isReachable(int source, int dest)const{
-    auto visited = bfs(source);
-    return visited[dest];
-}
-
-
-bool graph::isValidPath(const vector<int> & path) const{
-    int n = path.size();
-    for(int i = 0; i < n - 1; i++){
-        if(!hasEdge(path[i], path[i+1])){
-            return false;
-        }
-    }
-    return true;
-
-}
-*/
-
-vector<bool> graph::bfs(int source) const {
-    int n = adjlist.size(); // number of vertices
-    vector<bool> visited(n, false); // boolean vector of visited or not
+void graph::bfs(int source) {
+    unordered_set<int> visited;
     queue<int> q;
+    visited.insert(source);
+    q.push(source);
 
-    visited[source] = true;
-    q.push_back(source);
+    while (q.size()) {
 
-    int curr;
-    while (q) {
-        curr = q.pop_front();
-        for (auto n : adjlist[curr]) {
-            if (!visited[n]) {
-                visited[n] = true;
-                queue.push_back(n);
+        int curr = q.front();
+        q.pop();
+        cout << "curr: " << curr << '\n';
+
+        for (auto k : adjlist[curr]) {
+#ifdef DEBUG
+            p_set(visited);
+#endif
+            if (visited.find(k) == visited.end()) {
+                visited.insert(k);
+                q.push(k);
             }
         }
     }
+}
 
-    return visited;
-     
+void graph::dfs(int source) {
+    unordered_set<int> visited;
+    stack<int> q;
+    visited.insert(source);
+    q.push(source);
+
+    while (q.size()) {
+
+        int curr = q.top();
+        q.pop();
+        cout << "curr: " << curr << '\n';
+
+        for (auto k : adjlist[curr]) {
+#ifdef DEBUG
+            p_set(visited);
+#endif
+            if (visited.find(k) == visited.end()) {
+                visited.insert(k);
+                q.push(k);
+            }
+        }
+    }
 }
 
 int main() {  
@@ -114,17 +112,19 @@ int main() {
     g.addEdge(4, 1);
     g.addEdge(5, 1);
     g.addEdge(5, 4);
+    g.addEdge(6, 1);
+    g.addEdge(6, 5);
+    g.addEdge(7, 6);
+    g.addEdge(7, 5);
+    g.addEdge(23, 6);
+    g.addEdge(23, 1);
+    g.addEdge(23, 3);
 
     g.display();
 
-    /*
-    if (g.isValidPath(q)) cout << "exists " << '\n';
-    else cout << "does not exist " << '\n';
-
-    cout << "Is 6 reachable from 0? " << std::boolalpha << g.isReachable(0, 6) << '\n';
-    */
-    //cout << "shortest distance from 0 to 5 is " << '\n';
-    //cout << "shortest path is: ";
+    g.bfs(2);
+    cout << '\n';
+    g.dfs(2);
 
     return 0;
 }
