@@ -29,6 +29,11 @@ bool canFinish(int num_courses, vector<pair<int, int>>& prerequisites) { // this
     return num_courses == 0;
 }
 
+vector<int> findOrder(int n, vector<vector<int>>& pre) {
+    vector<int> res;
+    vector<vector<int>> adj(n, vector<int>());
+}
+
 int main() {
     vector<pair<int, int>> input = {{1,0},{0,1}};
     if (canFinish(2, input)) cout << "finished!\n";

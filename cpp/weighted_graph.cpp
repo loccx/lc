@@ -12,7 +12,7 @@ public:
     // Function to add a weighted directed edge to the graph
     void addEdge(int from, int to, int weight) {
         adjList[from].emplace_back(to, weight);
-    }
+    
 
     // Function to print the adjacency list representation of the graph
     void printGraph() {
