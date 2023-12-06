@@ -1,62 +1,33 @@
-class MinStack {
-private:
-    vector<int> stack;
-    vector<int> min;
-    int minItem;
+#include <iostream>
 
-public:
-    MinStack() {}
+using namespace std;
 
-    void push(int val) {
-        it ()
-    }
+class Minstack {
+    private:
+        vector<int> minvec;
+        vector<int> vec;
 
-    void pop() {
-    }
+    public:
+        Minstack () {}
 
-    int top() {
-    }
-
-    int getMin() {
-    }
+        void push(int inp);
+        void pop();
+        int top(int inp);
+        int get_min();
 }
 
-/*
-class MinStack {
-private:
-    vector<int> stack;
-    vector<int> min;
+void Minstack::push(int inp) {
+    if (inp < minvec[minvec.end()]) minvec.push_back(inp);
+    vec.push_back(inp);
+}
+void Minstack::pop() {
+    if (vec[vec.end()] == minvec[minvec.end()]) minvec.pop();
+    vec.pop();
+}
 
-int minItem;
-public:
-    MinStack() {}
-    
-    void push(int val) {
-        if (min.empty() || val <= getMin()) {
-            min.push_back(val);
-        }
-        stack.push_back(val);
-    }
-    
-    void pop() {
-        if (stack.back() == min.back()) min.pop_back();
-        stack.pop_back();
-    }
-    
-    int top() {
-        return s.back();
-    }
-    
-    int getMin() {
-        return min.back();
-    }
-};
-*/
-/**
- * Your MinStack object will be instantiated and called as such:
- * MinStack* obj = new MinStack();
- * obj->push(val);
- * obj->pop();
- * int param_3 = obj->top();
- * int param_4 = obj->getMin();
- */
+int Minstack::top(int inp) {
+    return vec[vec.end()];
+}
+int Minstack::get_min() {
+    return minvec[minvec.end()];
+}
