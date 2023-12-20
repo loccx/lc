@@ -8,6 +8,7 @@ using namespace std;
 class Graph {
     private:
         unordered_map<int, list<pair<int, int>>> adjlist;
+        unordered_set<int> nodes;
 
     public:
 
@@ -29,6 +30,24 @@ class Graph {
         }
 
         int dijkstra(int a, int b) {
+            unordered_map<int, pair<int, bool>> distances;
+            for (auto node : adjlist) {
+                distances[node.first] = {INT_MAX, false}; // default distance for every node in the graph is inf, and unvisited
+            }
+
+            stack<int> s;
+            s.push(a);
+            distances[a] = {0, true}; // distance from starter node is 0, and is now visited
+
+            while (!s.empty()) { // dfs
+                int curr = s.top();
+                s.pop();
+
+                for (auto next : adjlist[curr]) {
+                    int curr_to_next_dist = 
+                    distances[next].first = min(distances[next].first, distances[curr].first + adjlist[curr])
+                }
+            }
         }
 };
 
@@ -42,5 +61,4 @@ int main() {
         if (a != 0 || b != 0 || weight != 0) g.add_edge(a, b, weight);
     }
     g.print_adjlist();
- 
 }
