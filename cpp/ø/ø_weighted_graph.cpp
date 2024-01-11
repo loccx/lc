@@ -1,17 +1,17 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <unordered_set>
 #include <unordered_map>
 
 using namespace std;
 
 class Graph {
     private:
-        unordered_map<int, list<pair<int, int>>> adjlist;
+        unordered_map<int, list<pair<int, int>>> adjlist; // .first is the destination node, .second is the weight of the edge
         unordered_set<int> nodes;
 
     public:
-
         Graph() {}
 
         void add_edge(int a, int b, int weight) { // directed edge between nodes a and b
@@ -29,26 +29,12 @@ class Graph {
             cout << '\n';
         }
 
-        int dijkstra(int a, int b) {
-            unordered_map<int, pair<int, bool>> distances;
-            for (auto node : adjlist) {
-                distances[node.first] = {INT_MAX, false}; // default distance for every node in the graph is inf, and unvisited
-            }
-
-            stack<int> s;
-            s.push(a);
-            distances[a] = {0, true}; // distance from starter node is 0, and is now visited
-
-            while (!s.empty()) { // dfs
-                int curr = s.top();
-                s.pop();
-
-                for (auto next : adjlist[curr]) {
-                    int curr_to_next_dist = 
-                    distances[next].first = min(distances[next].first, distances[curr].first + adjlist[curr])
-                }
-            }
+        /*
+        int dijkstra(int src, int dst) {
+            return 0;
         }
+        */
+
 };
 
 int main() {
