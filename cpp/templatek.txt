@@ -21,10 +21,11 @@ typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<double> vd;
 typedef vector<ll> vll;
+typedef vector<bool> vb;
 typedef vector<vector<int>> vvi;
 typedef vector<vector<double>> vvd;
 typedef vector<vector<ll>> vvll;
-typedef vector<bool> vb;
+typedef vector<vector<bool>> vvb;
 typedef queue<int> qi;
 typedef queue<pair<int,int>> qpi;
 
@@ -42,3 +43,4 @@ int main() {
     }
     return 0;
 }
+
