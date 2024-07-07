@@ -3,6 +3,8 @@
 #include<iomanip>
 #include<cmath>
 #include<queue>
+#include<list>
+#include<map>
 
 using namespace std;
 
@@ -40,23 +42,55 @@ typedef vector<pd> vpd;
 typedef vector<pll> vpll;
 typedef queue<int> qi;
 typedef queue<pair<int,int>> qpi;
+typedef unordered_map<int,int> umii;
+typedef unordered_map<string,int> umsi;
+typedef unordered_map<int,string> umis;
 
-const static auto fast=[]{
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
-    return 0;
-}();
 //Solution class goes here
+class lru {
+public:
+    int size;
+    list<pair<int,int>> l;
+    unordered_map<int,list<pair<int,int>>::iterator> mp;
+    lru(int size):size(size){}
 
+    int get(int key){
+        if(mp.find(key)==mp.end())return -1;
+        l.splice(l.begin(),l,mp[key]);
+        return mp[key]->second;
+    }
 
-
+    void put(int key,int val){
+        if(mp.find(key)!=mp.end()){
+            l.splice(l.begin(),l,mp[key]);
+            mp[key]->second=val;
+            return;
+        }
+        if(l.size()==size){
+            auto d=l.back();
+            l.pop_back();
+            mp.erase(d.first);
+        }
+        l.push_front({key,val});
+        mp[key]=l.begin();
+    }
+};
 
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);cout.tie(0);
-    Solution s;
-    cout<< s <<endl;
+
+    lru l(2);
+    l.put(1,1);
+    l.put(2,2);
+    cout<<l.get(1)<<endl;
+    l.put(3,3);
+    cout<<l.get(2)<<endl;
+    l.put(4,4);
+    cout<<l.get(1)<<endl;
+    cout<<l.get(2)<<endl;
+    cout<<l.get(3)<<endl;
+    cout<<l.get(4)<<endl;
     return 0;
 }

@@ -48,7 +48,12 @@ const static auto fast=[]{
     return 0;
 }();
 //Solution class goes here
-
+class Solution {
+public:
+    int waysToPartition(vector<int>& nums, int k) {
+        int res=0;
+    }
+};
 
 
 
@@ -56,7 +61,8 @@ const static auto fast=[]{
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);cout.tie(0);
+    vi inp={22,4,-25,-20,-15,15,-16,7,19,-10,0,-13,-14};
     Solution s;
-    cout<< s <<endl;
+    cout<< s.waysToPartition(inp,-33) <<endl;
     return 0;
 }

@@ -41,13 +41,32 @@ typedef vector<pll> vpll;
 typedef queue<int> qi;
 typedef queue<pair<int,int>> qpi;
 
-const static auto fast=[]{
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
-    return 0;
-}();
 //Solution class goes here
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int p=0,p2=height.size()-1;
+        int ml=0,mr=0;
+        int res=0;
+        while(p<p2){
+            if(height[p]<height[p2]){
+                if(height[p]>ml)ml=height[p];
+                else{
+                    res+=ml-height[p];
+                    p++;
+                }
+            }
+            else{
+                if(height[p2]>mr)mr=height[p2];
+                else{
+                    res+=mr-height[p2];
+                    p2--;
+                }
+            }
+        }
+        return res;
+    }
+};
 
 
 

@@ -41,13 +41,29 @@ typedef vector<pll> vpll;
 typedef queue<int> qi;
 typedef queue<pair<int,int>> qpi;
 
-const static auto fast=[]{
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
-    return 0;
-}();
 //Solution class goes here
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if(nums.size()==1)return nums[0]==target;
+
+        int l=0,r=nums.size()-1;
+        while(l<=r){
+            int m=(l+r)/2;
+            if(nums[m]==target)return m;
+
+            if(nums[m]<nums[r]){
+                if(nums[m]<target&&target<=nums[r])l=m+1;
+                else r=m-1;
+            }
+            else{
+                if(nums[l]<=target&&target<nums[m])r=m-1;
+                else l=m+1;
+            }
+        }
+        return -1;
+    }
+};
 
 
 
