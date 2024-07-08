@@ -1,8 +1,12 @@
+#include <bits/stdc++.h>
 #include<algorithm>
 #include<iostream>
 #include<iomanip>
 #include<cmath>
 #include<queue>
+#include<unordered_set>
+#include<unordered_map>
+#include<numeric>
 
 using namespace std;
 
@@ -50,10 +54,34 @@ const static auto fast=[]{
 //Solution class goes here
 class Solution {
 public:
-    int waysToPartition(vector<int>& nums, int k) {
-        int res=0;
+    int sumOfBeauties(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> lscores(n,0),rscores(n,0);
+        int lmax=0,rmin=INT_MAX;
+        for(int k=1,x=n-2;k<n-1&&x>=1;k++,x--){
+            if(nums[k]>nums[k-1]){
+                if(nums[k]>lmax){
+                    lscores[k]=2;
+                    lmax=nums[k];
+                }
+                else lscores[k]=1;
+            }
+            if(nums[x]<nums[x+1]){
+                if(nums[x]<rmin){
+                    rscores[x]=2;
+                    rmin=nums[x];
+                }
+                else rscores[x]=1;
+            }
+        }
+        int score=0;
+        for(int k=1;k<n-1;k++){
+            score+=min(lscores[k],rscores[k]);
+        }
+        return score;
     }
 };
+
 
 
 
@@ -61,8 +89,8 @@ public:
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);cout.tie(0);
-    vi inp={22,4,-25,-20,-15,15,-16,7,19,-10,0,-13,-14};
+    vector<int> inp={2,4,6,4};
     Solution s;
-    cout<< s.waysToPartition(inp,-33) <<endl;
+    cout<<s.sumOfBeauties(inp)<<endl;
     return 0;
 }
