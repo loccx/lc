@@ -48,6 +48,7 @@ const static auto fast=[]{
     std::cout.tie(nullptr);
     return 0;
 }();
+
 //Solution class goes here
 
 
