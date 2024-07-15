@@ -3,6 +3,7 @@
 #include<iomanip>
 #include<cmath>
 #include<queue>
+#include<unordered_map>
 #include<numeric>
 
 using namespace std;
@@ -53,31 +54,50 @@ const static auto fast=[]{
 
 class Solution {
 public:
-    int waysToPartition(vector<int>& nums, int k) {
-        unordered_map<long long,int> l,r;
-        int n=nums.size();
-        long long s=accumulate(nums.begin(),nums.end(),0L);
-        long long left=0,right;
-        for(int x=0;x<n-1;x++){
-            left+=nums[x];
-            right=s-left;
-            r[right-left]++;
+    map<string,int> m;
+    string countOfAtoms(string formula) {
+        int n=formula.length;
+        map<string,int> mp;
+        stack<unordered_map<string,int> sm;
+        sm.push({});
+
+        int k=0;
+        while(k<n){
+            if(formula[k]=='('){
+                sm.push({});
+                k++;
+            }
+            else if(formula[k]==')'){
+                auto popped=sm.top();
+                sm.pop();
+                k++;
+                int begin=k;
+                while(k<n && isdigit(formula[k]))k++;
+                int mult = k>begin && isdigit(formula[begin]) ? stoi(formula.substr(begin,k-begin)) : 1;
+                for(auto p:popped){
+                    sm.top()[p.first]+=mult*p.second;
+                }
+            }
+            else{
+                int begin=k;
+                k++;
+                while(k<n && islower(formula[k]))k++;
+                string elem=formula.substr(begin,k-begin);
+
+                begin=k;
+                while(k<n && isdigit(formula[k]))k++;
+                int mult = k>begin && isdigit(formula[begin]) ? stoi(formula.substr(begin,k-begin)) : 1;
+                sm.top()[elem]+=mult;
+            }
         }
 
-        int res=r[0];
-        left=0;
-        for(int x=0;x<n;x++){
-            left+=nums[x];
-            right=s-left;
-            int diff=k-nums[x];
-            res=max(res,l[-diff]+r[diff]);
-            l[right-left]++;
-            r[right-left]--;
+        string res="";
+        for(auto pair:sm.top()){
+            res+=(pair.first+pair.second);
         }
         return res;
     }
 };
-
 
 
 
