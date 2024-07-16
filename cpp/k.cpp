@@ -1,13 +1,5 @@
-#include<algorithm>
-#include<iostream>
-#include<iomanip>
-#include<cmath>
-#include<queue>
-#include<unordered_map>
-#include<numeric>
-
+#include<bits/stdc++.h>
 using namespace std;
-
 #define endl '\n'
 #define fork(a,b) for(ll k=a;k<b;k++)
 #define fori(a,b) for(ll i=a;i<b;i++)
@@ -20,9 +12,9 @@ using namespace std;
 #define PI M_PI
 #define PI2 M_PI_2
 #define c(k) int k;cin>>k;
-#define f first
-#define s second
-
+//#define f first
+//#define s second
+ 
 typedef long long ll;
 typedef pair<int,int> pi;
 typedef pair<double,double> pd;
@@ -37,74 +29,70 @@ typedef vector<vector<double>> vvd;
 typedef vector<vector<ll>> vvll;
 typedef vector<vector<bool>> vvb;
 typedef vector<pi> vpi;
-typedef vector<vector<pi>> vvpi;
 typedef vector<pd> vpd;
 typedef vector<pll> vpll;
 typedef queue<int> qi;
 typedef queue<pair<int,int>> qpi;
-
+ 
 const static auto fast=[]{
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
     std::cout.tie(nullptr);
     return 0;
 }();
-
-//Solution class goes here
+//solution class
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 
 class Solution {
 public:
-    map<string,int> m;
-    string countOfAtoms(string formula) {
-        int n=formula.length;
-        map<string,int> mp;
-        stack<unordered_map<string,int> sm;
-        sm.push({});
-
-        int k=0;
-        while(k<n){
-            if(formula[k]=='('){
-                sm.push({});
-                k++;
-            }
-            else if(formula[k]==')'){
-                auto popped=sm.top();
-                sm.pop();
-                k++;
-                int begin=k;
-                while(k<n && isdigit(formula[k]))k++;
-                int mult = k>begin && isdigit(formula[begin]) ? stoi(formula.substr(begin,k-begin)) : 1;
-                for(auto p:popped){
-                    sm.top()[p.first]+=mult*p.second;
-                }
-            }
-            else{
-                int begin=k;
-                k++;
-                while(k<n && islower(formula[k]))k++;
-                string elem=formula.substr(begin,k-begin);
-
-                begin=k;
-                while(k<n && isdigit(formula[k]))k++;
-                int mult = k>begin && isdigit(formula[begin]) ? stoi(formula.substr(begin,k-begin)) : 1;
-                sm.top()[elem]+=mult;
-            }
-        }
-
+    string start="";
+    string dest="";
+    string getDirections(TreeNode* root, int startValue, int destValue) {
         string res="";
-        for(auto pair:sm.top()){
-            res+=(pair.first+pair.second);
-        }
+        string curr1,curr2;
+        bfs(root,startValue,curr1,this->start);
+        bfs(root,destValue,curr2,this->dest);
+        int p=0;
+        while(p<this->start.size()&&p<this->dest.size()&&(this->start[p]==this->dest[p]))p++;
+        this->start=this->start.substr(p);
+        this->dest=this->dest.substr(p);
+        res=string(this->start.size(),'U');
+        res+=this->dest;
         return res;
     }
-};
 
+    void bfs(TreeNode* root,int v,string& curr,string& res){
+        if(!root)return;
+        if(root->val==v){
+            res=curr;
+            return;
+        }
+        if(root->left){
+            curr+='L';
+            bfs(root->left,v,curr,res);
+            curr=curr.substr(curr.size()-1);
+        }
+        if(root->right){
+            curr+='R';
+            bfs(root->right,v,curr,res);
+            curr=curr.substr(curr.size()-1);
+        }
+    }
+}; 
 
-
+ 
+ 
+ 
 int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);cout.tie(0);
     Solution s;
-    cout<< s <<endl;
-    return 0;
 }
