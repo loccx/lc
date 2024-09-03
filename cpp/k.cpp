@@ -14,7 +14,7 @@ using namespace std;
 #define c(k) int k;cin>>k;
 //#define f first
 //#define s second
-
+ 
 typedef long long ll;
 typedef pair<int,int> pi;
 typedef pair<double,double> pd;
@@ -40,38 +40,32 @@ const static auto fast=[]{
     std::cout.tie(nullptr);
     return 0;
 }();
-//solution
+//solution class
 class Solution {
 public:
-    int longestValidParentheses(string s) {
-        if(s=="")return 0;
+    string lastSubstring(string s) {
+        int k=0,c=1,x=0;
         int n=s.size();
-        int res=0;
-        stack<int> mem;
-        mem.push(-1);
-        for(int k=0;k<n;k++){
-            if(s[k]=='('){
-                mem.push(k);
+        while(c+x<n){
+            if(s[k+x]==s[c+x]){
+                x++;
+                continue;
+            }
+            else if(s[k+x]>s[c+x]){
+                c=c+x+1;
             }
             else{
-                if(!mem.empty())mem.pop();
-                if(mem.empty()){
-                    mem.push(k);
-                }
-                else{
-                    res=max(res,k-mem.top());
-                }
+                k=max(k+x+1,c);
+                c=k+1;
             }
+            x=0;
         }
-        return res;
+        return s.substr(k);
     }
 };
-
-
-
-
-
+ 
+ 
+ 
 int main(){
     Solution s;
-    cout<<s.longestValidParentheses("()(()")<<endl;
 }
