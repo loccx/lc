@@ -41,28 +41,7 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class Solution {
-public:
-    string lastSubstring(string s) {
-        int k=0,c=1,x=0;
-        int n=s.size();
-        while(c+x<n){
-            if(s[k+x]==s[c+x]){
-                x++;
-                continue;
-            }
-            else if(s[k+x]>s[c+x]){
-                c=c+x+1;
-            }
-            else{
-                k=max(k+x+1,c);
-                c=k+1;
-            }
-            x=0;
-        }
-        return s.substr(k);
-    }
-};
+
  
  
  

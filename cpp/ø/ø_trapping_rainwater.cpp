@@ -66,6 +66,11 @@ public:
         }
         return res;
     }
+
+    int trappingRainWater(vector<int>& height){
+        int n=height.size();
+        int l=0,r=n-1;
+    }
 };
 
 
