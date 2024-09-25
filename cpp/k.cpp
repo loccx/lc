@@ -43,34 +43,22 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
-        int n=arr1.size();
-        int m=arr2.size();
-        unordered_set<string> pref;
-        for(int& a:arr1){
-            string curr=to_string(a);
-            for(int k=1;k<=curr.size();k++){
-                pref.insert(curr.substr(0,k));
-            }
-        }
-
-        int res=0;
-        for(int& b:arr2){
-            string curr=to_string(b);
-            for(int k=curr.size();k>0;k--){
-                if(pref.count(curr.substr(0,k)))res=max(res,int(curr.substr(0,k).size()));
-            }
-        }
+    vector<int> lexicalOrder(int n) {
+        vector<int> res;
+        dfs(res,n,1);
         return res;
+    }
+    
+    void dfs(vector<int>& res,int n,int c){
+        res.push_back(c);
+        for(int k=0;k<10;k++){
+            if(c*10+k<=n)dfs(res,n,c+k);
+        }
     }
 };
  
  
  
 int main(){
-    vector<int> a1={1, 10, 100};
-    vector<int> a2={1000};
     Solution s;
-    cout<<s.longestCommonPrefix(a1,a2)<<endl;
-    return 0;
 }
