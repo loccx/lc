@@ -41,21 +41,136 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class Solution {
+class ll{
 public:
-    vector<int> lexicalOrder(int n) {
-        vector<int> res;
-        dfs(res,n,1);
-        return res;
+    int val;
+    ll* prev;
+    ll* next;
+
+    ll(){}
+    ll(int k):val(k){}
+};
+
+class MyCircularDeque {
+public:
+    int currsize;
+    int size;
+    ll* head;
+    ll* tail;
+    MyCircularDeque(int k):size(k),currsize(0) {
     }
     
-    void dfs(vector<int>& res,int n,int c){
-        res.push_back(c);
-        for(int k=0;k<10;k++){
-            if(c*10+k<=n)dfs(res,n,c+k);
+    bool insertFront(int value) {
+        if(!currsize){
+            head=new ll(value);
+            tail=head;
+            currsize++;
+            return true;
+        }
+        else if(currsize==size)return false;
+        else{
+            ll* temp=head;
+            head=new ll(value);
+            temp->prev=head;;
+            head->next=temp;
+            currsize++;
+            return true;
         }
     }
+    
+    bool insertLast(int value) {
+        if(!currsize){
+            head=new ll(value);
+            tail=head;
+            currsize++;
+            return true;
+        }
+        else if(currsize==size)return false;
+        else{
+            ll* temp=tail;
+            tail=new ll(value);
+            temp->next=tail;
+            tail->prev=temp;
+            currsize++;
+            return true;
+        }
+    }
+    
+    bool deleteFront() {
+        if(!currsize){
+            return false;
+        }
+        else if(currsize==1){
+            delete head;
+            head=nullptr;
+            tail=nullptr;
+            currsize=0;
+            return true;
+        }
+        else{
+            ll* temp=head;
+            head=head->next;
+            delete temp;
+            temp=nullptr;
+            head->prev=nullptr;
+            currsize--;
+            return true;
+        }
+    }
+    
+    bool deleteLast() {
+        if(!currsize){
+            return false;
+        }
+        else if(currsize==1){
+            delete tail;
+            tail=nullptr;
+            head=nullptr;
+            currsize=0;
+            return true;
+        }
+        else{
+            ll* temp=tail;
+            tail=tail->prev;
+            delete temp;
+            temp=nullptr;
+            tail->next=nullptr;
+            currsize--;
+            return true;
+        }
+    }
+    
+    int getFront() {
+        if(!currsize)return -1;
+        else return head->val;
+    }
+    
+    int getRear() {
+        if(!currsize)return -1;
+        else return tail->val;
+    }
+    
+    bool isEmpty() {
+        return !currsize;
+    }
+    
+    bool isFull() {
+        return currsize==size;
+    }
 };
+
+/**
+ * Your MyCircularDeque object will be instantiated and called as such:
+ * MyCircularDeque* obj = new MyCircularDeque(k);
+ * bool param_1 = obj->insertFront(value);
+ * bool param_2 = obj->insertLast(value);
+ * bool param_3 = obj->deleteFront();
+ * bool param_4 = obj->deleteLast();
+ * int param_5 = obj->getFront();
+ * int param_6 = obj->getRear();
+ * bool param_7 = obj->isEmpty();
+ * bool param_8 = obj->isFull();
+ */
  
  
  
