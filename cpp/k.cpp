@@ -41,135 +41,73 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class ll{
+#include <iostream>
+
+class ll {
 public:
     int val;
     ll* prev;
     ll* next;
 
-    ll(){}
-    ll(int k):val(k){}
+    ll():val(0),prev(nullptr),next(nullptr){}
+    ll(int k):val(k),prev(nullptr),next(nullptr){}
 };
 
-class MyCircularDeque {
-public:
+class CustomStack {
+private:
     int currsize;
-    int size;
+    int max;
     ll* head;
     ll* tail;
-    MyCircularDeque(int k):size(k),currsize(0) {
-    }
+
+public:
+    CustomStack(int maxSize) : currsize(0), max(maxSize), head(nullptr), tail(nullptr) {}
     
-    bool insertFront(int value) {
-        if(!currsize){
-            head=new ll(value);
+    void push(int x) {
+        if(currsize==0){
+            head=new ll(x);
             tail=head;
             currsize++;
-            return true;
         }
-        else if(currsize==size)return false;
-        else{
-            ll* temp=head;
-            head=new ll(value);
-            temp->prev=head;;
-            head->next=temp;
+        else if(currsize<max){
+            tail->next=new ll(x);
+            tail->next->prev = tail;
+            tail=tail->next;
             currsize++;
-            return true;
         }
     }
     
-    bool insertLast(int value) {
-        if(!currsize){
-            head=new ll(value);
-            tail=head;
-            currsize++;
-            return true;
-        }
-        else if(currsize==size)return false;
-        else{
-            ll* temp=tail;
-            tail=new ll(value);
-            temp->next=tail;
-            tail->prev=temp;
-            currsize++;
-            return true;
-        }
-    }
-    
-    bool deleteFront() {
-        if(!currsize){
-            return false;
-        }
-        else if(currsize==1){
-            delete head;
-            head=nullptr;
-            tail=nullptr;
-            currsize=0;
-            return true;
+    int pop() {
+        if(currsize==0)return -1;
+        int store=tail->val;
+        ll* temp=tail;
+        if(currsize==1){
+            head=tail=nullptr;
         }
         else{
-            ll* temp=head;
-            head=head->next;
-            delete temp;
-            temp=nullptr;
-            head->prev=nullptr;
-            currsize--;
-            return true;
-        }
-    }
-    
-    bool deleteLast() {
-        if(!currsize){
-            return false;
-        }
-        else if(currsize==1){
-            delete tail;
-            tail=nullptr;
-            head=nullptr;
-            currsize=0;
-            return true;
-        }
-        else{
-            ll* temp=tail;
             tail=tail->prev;
-            delete temp;
-            temp=nullptr;
             tail->next=nullptr;
-            currsize--;
-            return true;
         }
+        delete temp;
+        temp=nullptr;
+        currsize--;
+        return store;
     }
     
-    int getFront() {
-        if(!currsize)return -1;
-        else return head->val;
-    }
-    
-    int getRear() {
-        if(!currsize)return -1;
-        else return tail->val;
-    }
-    
-    bool isEmpty() {
-        return !currsize;
-    }
-    
-    bool isFull() {
-        return currsize==size;
+    void increment(int k, int val) {
+        ll* curr=head;
+        while(k--&&curr!=nullptr){
+            curr->val+=val;
+            curr=curr->next;
+        }
     }
 };
-
 /**
- * Your MyCircularDeque object will be instantiated and called as such:
- * MyCircularDeque* obj = new MyCircularDeque(k);
- * bool param_1 = obj->insertFront(value);
- * bool param_2 = obj->insertLast(value);
- * bool param_3 = obj->deleteFront();
- * bool param_4 = obj->deleteLast();
- * int param_5 = obj->getFront();
- * int param_6 = obj->getRear();
- * bool param_7 = obj->isEmpty();
- * bool param_8 = obj->isFull();
+ * Your CustomStack object will be instantiated and called as such:
+ * CustomStack* obj = new CustomStack(maxSize);
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * obj->increment(k,val);
  */
  
  
