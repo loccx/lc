@@ -41,76 +41,41 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-#include <iostream>
-
-class ll {
+class Solution {
 public:
-    int val;
-    ll* prev;
-    ll* next;
-
-    ll():val(0),prev(nullptr),next(nullptr){}
-    ll(int k):val(k),prev(nullptr),next(nullptr){}
-};
-
-class CustomStack {
-private:
-    int currsize;
-    int max;
-    ll* head;
-    ll* tail;
-
-public:
-    CustomStack(int maxSize) : currsize(0), max(maxSize), head(nullptr), tail(nullptr) {}
-    
-    void push(int x) {
-        if(currsize==0){
-            head=new ll(x);
-            tail=head;
-            currsize++;
+    bool areSentencesSimilar(string sentence1, string sentence2) {
+        string curr="";
+        deque<string> a, b;
+        for(char& c:sentence1){
+            if(c==' '){
+                a.push_back(temp);
+                temp="";
+            }
+            else temp+=c;
         }
-        else if(currsize<max){
-            tail->next=new ll(x);
-            tail->next->prev = tail;
-            tail=tail->next;
-            currsize++;
+        a.push_back(temp);
+        temp="";
+        for(char& c:sentence2){
+            if(c==' '){
+                b.push_back(temp);
+                temp="";
+            }
+            else temp+=c;
         }
-    }
-    
-    int pop() {
-        if(currsize==0)return -1;
-        int store=tail->val;
-        ll* temp=tail;
-        if(currsize==1){
-            head=tail=nullptr;
+        b.push_back(temp);
+        temp="";
+        while(a.size()!=0&&b.size()!=0&&(a.front()==b.front())){
+            a.pop_front();
+            b.pop_front();
         }
-        else{
-            tail=tail->prev;
-            tail->next=nullptr;
+        while(a.size()!=0&&b.size()!=0&&(a.back()==b.back())){
+            a.pop_back();
+            b.pop_back();
         }
-        delete temp;
-        temp=nullptr;
-        currsize--;
-        return store;
-    }
-    
-    void increment(int k, int val) {
-        ll* curr=head;
-        while(k--&&curr!=nullptr){
-            curr->val+=val;
-            curr=curr->next;
-        }
+        if(!a.size()||!b.size())return true;
+        return false;
     }
 };
-/**
- * Your CustomStack object will be instantiated and called as such:
- * CustomStack* obj = new CustomStack(maxSize);
- * obj->push(x);
- * int param_2 = obj->pop();
- * obj->increment(k,val);
- */
- 
- 
  
 int main(){
     Solution s;
