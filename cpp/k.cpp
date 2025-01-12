@@ -41,42 +41,21 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class Solution {
+ class Solution {
 public:
-    bool areSentencesSimilar(string sentence1, string sentence2) {
-        string curr="";
-        deque<string> a, b;
-        for(char& c:sentence1){
-            if(c==' '){
-                a.push_back(temp);
-                temp="";
-            }
-            else temp+=c;
-        }
-        a.push_back(temp);
-        temp="";
-        for(char& c:sentence2){
-            if(c==' '){
-                b.push_back(temp);
-                temp="";
-            }
-            else temp+=c;
-        }
-        b.push_back(temp);
-        temp="";
-        while(a.size()!=0&&b.size()!=0&&(a.front()==b.front())){
-            a.pop_front();
-            b.pop_front();
-        }
-        while(a.size()!=0&&b.size()!=0&&(a.back()==b.back())){
-            a.pop_back();
-            b.pop_back();
-        }
-        if(!a.size()||!b.size())return true;
-        return false;
+    long long m=1e6+7;
+    vector<vector<int>> g(m,vector<int>(m));
+    void test(){
+        g[0][0]=1;
+        cout<<g[0][0]<<endl;
+    }
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        return 0;
     }
 };
  
+ 
 int main(){
     Solution s;
+    s.test();
 }
