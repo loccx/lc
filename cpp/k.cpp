@@ -35,50 +35,28 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int longestCycle(vector<int>& edges) {
-        int n=edges.size();
+    int search(vector<int>& nums, int target) {
+        int n=nums.size();
+        int l=0,r=n-1;
+        while(l<=r){
+            int m=(l+r)/2;
+            if(nums[m]==target)return m;
 
-        vector<bool> vi(n,false);
-        vector<int> bt(n,-1);
-
-        int res=-1;
-        stack<int> s;
-
-        for(int k=0;k<n;k++){
-            if(!vi[k]&&edges[k]!=-1){
-                s.push(k);
-                while(!s.empty()){
-                    int c=s.top();
-                    s.pop();
-                    vi[c]=true;
-                    if(edges[c]!=-1){
-                        bt[edges[c]]=c;
-                        if(vi[edges[c]]){
-                            int o=edges[c];
-                            int cl=1;
-                            while(c!=o){
-                                c=bt[c];
-                                cl++;
-                            }
-                            if(cl!=-1)res=max(res,cl);
-                        }
-                        else{
-                            s.push(edges[c]);
-                        }
-                    }
-                }
+            if(nums[m]<nums[r]){
+                if(nums[m]<target&&target<nums[r])l=m+1;
+                else r=m-1;
+            }
+            else{
+                if(nums[m]>target&&target>nums[l])r=m-1;
+                else l=m+1;
             }
         }
-        return res;
+        return -1;
     }
 }; 
 
  
  
- 
 int main(){
-    V<int> inp={1,0};
-    V<int> inp2={-1,4,-1,2,0,4};
     Solution s;
-    cout<<s.longestCycle(inp2)<<endl;
 }
