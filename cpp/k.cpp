@@ -35,26 +35,25 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int search(vector<int>& nums, int target) {
+    int findPeakElement(vector<int>& nums) {
         int n=nums.size();
-        int l=0,r=n-1;
+        if(n==1)return 0;
+        if(n==2)
+            if(nums[0]>nums[1])return 0;
+            else return 1;
+        if(nums[0]>nums[1])return 0;
+        if(nums[n-1]>nums[n-2])return n-1;
+        int l=1,r=n-2;
         while(l<=r){
-            int m=(l+r)/2;
-            if(nums[m]==target)return m;
-
-            if(nums[m]<nums[r]){
-                if(nums[m]<target&&target<nums[r])l=m+1;
-                else r=m-1;
-            }
-            else{
-                if(nums[m]>target&&target>nums[l])r=m-1;
-                else l=m+1;
-            }
+            int m=l+(r-l)/2;
+            if(nums[m]>nums[m+1]&&nums[m]>nums[m-1])return m;
+            else if(nums[m]<nums[m-1])r=m-1;
+            else if(nums[m]<nums[m+1])l=m+1;
         }
         return -1;
     }
-}; 
-
+};
+ 
  
  
 int main(){
