@@ -35,33 +35,25 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int longestConsecutive(vector<int>& nums) {
-        unordered_set<int> s;
-        for(int n:nums){
-            s.insert(n);
-        }
-        int res=0;
-        while(!s.empty()){
-            int cur=0;
-            int c=*s.begin();
-            int c1=c+1;
-            while(s.count(c)){
-                s.erase(c);
-                c--;
-                cur++;
+    void rotate(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        int m=matrix[0].size();
+        for(int k=0;k<n;k++){
+            for(int x=k+1;x<m;x++){
+                swap(matrix[k][x],matrix[x][k]);
             }
-            while(s.count(c1)){
-                s.erase(c1);
-                c1++;
-                cur++;
-            }
-            res=max(res,cur);
         }
-        return res;
+        for(int k=0;k<n;k++){
+            for(int x=0;x<m/2;x++){
+                swap(matrix[k][x],matrix[k][n-x-1]);
+            }
+        }
     }
-}; 
+};
+ 
  
  
 int main(){
+
     Solution s;
 }
