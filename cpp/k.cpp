@@ -35,28 +35,21 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    bool isRobotBounded(string instructions) {
-        int dc[2]={0,0};
-        int dir[4][2]={{0,1},{1,0},{0,-1},{-1,0}};
-        int k=0;
-        for(auto& ins:instructions){
-            if(ins=='L'){
-                k+=3;
-                k%=4;
-            }
-            else if(ins=='R'){
-                k++;
-                k%=4;
-            }
-            else{
-                dc[0]+=dir[k][0];
-                dc[1]+=dir[k][1];
-            }
+    int maximumPopulation(vector<vector<int>>& logs) {
+        map<int,int> mp;
+        for (auto& log : logs) {
+            mp[log[0]]+=1;
+            mp[log[1]]-=1;
         }
-        return k!=0 || (dc[0]==0&&dc[1]==0);
+        int pop=0;
+        int res=0;
+        for (auto& p : mp) {
+            pop+=p.second;
+            res=max(res,pop);
+        }
+        return res;
     }
-};
- 
+}; 
  
  
 int main(){
