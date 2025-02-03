@@ -26,16 +26,6 @@ typedef priority_queue<int> pqi;
 const ll M=1e9+7;
 const ll N=2*1e5+10;
 
-void pvv(vector<vector<int>>& gr){
-    for(auto& g:gr){
-        for(int n:g){
-            cout<<n<<' ';
-        }
-        cout<<endl;
-    }
-    cout<<endl;
-}
-
 const static auto fast=[]{
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
@@ -45,114 +35,40 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    void rec(vector<vector<int>>& grid,int r,int c,vector<vector<int>>& deg,vector<vector<bool>>& vis){
-        if(deg[r][c]&&!vis[r][c]){
-            vis[r][c]=true;
-            int n=grid.size();
-            int m=grid[0].size();
-            if(r>0&&grid[r-1][c]==1&&!vis[r-1][c]){
-                deg[r-1][c]++;
-                rec(grid,r-1,c,deg,vis);
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        auto f=[](int x,int y){
+            return x*6*1e4+y;
+        };
+        unordered_set<int> s;
+        for(auto& obs:obstacles)s.insert(f(obs[0],obs[1]));
+        int d[4][2]={{0,1},{1,0},{0,-1},{-1,0}};
+        int cur[2]={0,0};
+        int k=0;
+        int res=0;
+        for(auto& com:commands){
+            if(com==-2){
+                k+=3;
+                k%=4;
             }
-            if(r<n-1&&grid[r+1][c]==1&&!vis[r+1][c]){
-                deg[r+1][c]++;
-                rec(grid,r+1,c,deg,vis);
+            else if(com==-1){
+                k++;
+                k%=4;
             }
-            if(c>0&&grid[r][c-1]==1&&!vis[r][c-1]){
-                deg[r][c-1]++;
-                rec(grid,r,c-1,deg,vis);
-            }
-            if(c<m-1&&grid[r][c+1]==1&&!vis[r][c+1]){
-                deg[r][c+1]++;
-                rec(grid,r,c+1,deg,vis);
-            }
-        }
-    }
-
-    void destroy(vector<vector<int>>& grid,vector<vector<int>>& deg,vector<vector<bool>>& vis,int r,int c,int& count){
-        if(!vis[r][c]){
-            vis[r][c]=true;
-            int n=grid.size();
-            int m=grid[0].size();
-
-            if(r>0&&deg[r-1][c]>0&&!vis[r-1][c]){
-                deg[r-1][c]--;
-                if(deg[r-1][c]==0){
-                    count++;
-                    grid[r-1][c]=0;
+            else{
+                while(com--){
+                    if(s.count(f(cur[0]+d[k][0],cur[1]+d[k][1])))break;
+                    cur[0]+=d[k][0];
+                    cur[1]+=d[k][1];
                 }
-                rec(grid,r-1,c,deg,vis);
+                res=max(res,cur[0]*cur[0]+cur[1]*cur[1]);
             }
-            if(r<n-1&&deg[r+1][c]>0&&!vis[r+1][c]){
-                deg[r+1][c]--;
-                if(deg[r+1][c]==0){
-                    count++;
-                    grid[r+1][c]=0;
-                }
-                rec(grid,r+1,c,deg,vis);
-            }
-            if(c>0&&deg[r][c-1]>0&&!vis[r][c-1]){
-                deg[r][c-1]--;
-                if(deg[r][c-1]==0){
-                    count++;
-                    grid[r][c-1]=0;
-                }
-                rec(grid,r,c-1,deg,vis);
-            }
-            if(c<m-1&&deg[r][c+1]>0&&!vis[r][c+1]){
-                deg[r][c+1]--;
-                if(deg[r][c+1]==0){
-                    count++;
-                    grid[r][c+1]=0;
-                }
-                rec(grid,r,c+1,deg,vis);
-            }
-        }
-    }
-
-    vector<int> hitBricks(vector<vector<int>>& grid, vector<vector<int>>& hits) {
-        int n=grid.size();
-        int m=grid[0].size();
-        vector<vector<bool>> vis(n,vector<bool>(m,false));
-        vector<vector<int>> deg(n,vector<int>(m,0));
-        for(int x=0;x<m;x++){
-            if(grid[0][x]==1){
-                deg[0][x]++;
-                rec(grid,0,x,deg,vis);
-                vis.assign(n,vector<bool>(m,false));
-            }
-        }
-
-        pvv(deg);
-
-        vis.assign(n,vector<bool>(m,false));
-        vector<int> res;
-        for(auto& hit:hits){
-            int curr=0;
-            if(deg[hit[0]][hit[1]]>0){
-                deg[hit[0]][hit[1]]=0;
-                destroy(grid,deg,vis,hit[0],hit[1],curr);
-                res.push_back(curr);
-                vis.assign(n,vector<bool>(m,false));
-            }
-            else res.push_back(0);
         }
         return res;
     }
 };
  
-void pv(vector<int>& vec){
-    for(int v:vec){
-        cout<<v<<' ';
-    }
-    cout<<endl;
-}
  
  
 int main(){
-    vector<vector<int>> inp={{1,0,0,0},{1,1,0,0}};
-    vector<vector<int>> hit={{1,1},{1,0}};
     Solution s;
-    vector<int> res=s.hitBricks(inp,hit);
-    pv(res);
 }
