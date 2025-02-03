@@ -35,35 +35,25 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
-        auto f=[](int x,int y){
-            return x*6*1e4+y;
-        };
-        unordered_set<int> s;
-        for(auto& obs:obstacles)s.insert(f(obs[0],obs[1]));
-        int d[4][2]={{0,1},{1,0},{0,-1},{-1,0}};
-        int cur[2]={0,0};
+    bool isRobotBounded(string instructions) {
+        int dc[2]={0,0};
+        int dir[4][2]={{0,1},{1,0},{0,-1},{-1,0}};
         int k=0;
-        int res=0;
-        for(auto& com:commands){
-            if(com==-2){
+        for(auto& ins:instructions){
+            if(ins=='L'){
                 k+=3;
                 k%=4;
             }
-            else if(com==-1){
+            else if(ins=='R'){
                 k++;
                 k%=4;
             }
             else{
-                while(com--){
-                    if(s.count(f(cur[0]+d[k][0],cur[1]+d[k][1])))break;
-                    cur[0]+=d[k][0];
-                    cur[1]+=d[k][1];
-                }
-                res=max(res,cur[0]*cur[0]+cur[1]*cur[1]);
+                dc[0]+=dir[k][0];
+                dc[1]+=dir[k][1];
             }
         }
-        return res;
+        return k!=0 || (dc[0]==0&&dc[1]==0);
     }
 };
  
