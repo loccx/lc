@@ -35,21 +35,21 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int maximumPopulation(vector<vector<int>>& logs) {
-        map<int,int> mp;
-        for (auto& log : logs) {
-            mp[log[0]]+=1;
-            mp[log[1]]-=1;
+    bool isCovered(vector<vector<int>>& ranges, int left, int right) {
+        int gr[52];
+        for(auto& range:ranges){
+            gr[range[0]]++;
+            gr[range[1]+1]--;
         }
-        int pop=0;
-        int res=0;
-        for (auto& p : mp) {
-            pop+=p.second;
-            res=max(res,pop);
+        int over=0;
+        for(int k=1;k<=right;k++){
+            over+=gr[k];
+            if(over<0&&k>=left)return false;
         }
-        return res;
+        return true;
     }
-}; 
+};
+ 
  
  
 int main(){
