@@ -35,16 +35,16 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    bool isCovered(vector<vector<int>>& ranges, int left, int right) {
-        int gr[52];
-        for(auto& range:ranges){
-            gr[range[0]]++;
-            gr[range[1]+1]--;
+    bool carPooling(vector<vector<int>>& trips, int capacity) {
+        map<int,int> mp;
+        for(auto& tr:trips){
+            mp[tr[1]]+=tr[0];
+            mp[tr[2]]-=tr[0];
         }
-        int over=0;
-        for(int k=1;k<=right;k++){
-            over+=gr[k];
-            if(over<0&&k>=left)return false;
+        int curr=0;
+        for(auto& p:mp){
+            curr+=p.second;
+            if(curr>capacity)return false;
         }
         return true;
     }
