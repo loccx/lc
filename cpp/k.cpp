@@ -35,39 +35,71 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& people) {
-        map<int,int> mp;
-        for (auto& flower : flowers) {
-            mp[flower[0]]++;
-            mp[flower[1]+1]--;
-        }
+    string addBinary(string a, string b) {
+        int n=a.size();
+        int m=b.size();
 
-        sort(people.begin(), people.end());
+        string res = "";
 
-        int n = flowers.size();
-        int it = 0;
-        int count = 0;
-        vector<int> res;
-
-        unordered_map<int,int> counter;
-
-        for (auto& p : mp) {
-            while (it < people.size() && people[it] < p.first) {
-                counter[people[it]] = count;
-                it++;
+        int it = n-1;
+        int it2 = m-1;
+        bool carry = false;
+        while (it>=0 && it2>=0) {
+            if (carry) {
+                if (a[it] == '0' && b[it2] == '0') {
+                    res = '1' + res;
+                    carry ^= 1;
+                }
+                else if ((a[it] == '0' && b[it2] == '1') || (a[it] == '1' && b[it2] == '0')) {
+                    res = '0' + res;
+                }
+                else if (a[it] == '1' && b[it2] == '1') {
+                    res = '1' + res;
+                }
             }
-            count += p.second;
+            else { // no carry
+                if (a[it] == '0' && b[it2] == '0') {
+                    res = '0' + res;
+                }
+                else if ((a[it] == '0' && b[it2] == '1') || (a[it] == '1' && b[it2] == '0')) {
+                    res = '1' + res;
+                }
+                else if (a[it] == '1' && b[it2] == '1') {
+                    res = '0' + res;
+                    carry ^= 1;
+                }
+            }
         }
-
-        int last = counter.rbegin()->first;
-        for (int k = 0; k < people.size(); k++) {
-            if (people[k] > last) res.push_back(0);
-            else res.push_back(counter[people[k]]);
+        while (it >= 0) {
+            if (carry) {
+                if (a[it] == '0') {
+                    res = '1' + res;
+                    carry ^= 1;
+                }
+                else {
+                    res = '0' + res;
+                    carry ^= 1;
+                }
+            }
+            else res = a[it] + res;
         }
-
+        while (it2 >= 0) {
+            if (carry) {
+                if (b[it2] == '0') {
+                    res = '1' + res;
+                    carry ^= 1;
+                }
+                else {
+                    res = '0' + res;
+                    carry ^= 1;
+                }
+            }
+            else res = b[it2] + res;
+        }
         return res;
     }
-}; 
+};
+ 
  
  
 int main(){
