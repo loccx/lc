@@ -35,17 +35,21 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int numberOfPoints(vector<vector<int>>& nums) {
-        vector<int> line(102,0);
-        for (auto& num : nums) {
-            line[num[0]]++;
-            line[num[1]+1]--;
+    int findMinArrowShots(vector<vector<int>>& points) {
+        auto cmp = [&](const vector<int>& a, const vector<int>& b) {
+            return a[1] < b[1];
         }
-        int count = 0;
-        int res = 0;
-        for (int k = 1; k <= 100; k++) {
-            count += line[k];
-            if (count > 0) res++;
+
+        sort(points.begin(), points.end(), cmp);
+
+        int res = 1;
+        auto& it = points[0];
+        int n = points.size();
+        for (int k = 1; k < n; k++) {
+            if (points[k][0] > it[1]) {
+                res++;
+                it = points[k];
+            }
         }
         return res;
     }
