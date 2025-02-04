@@ -35,26 +35,39 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int findMinArrowShots(vector<vector<int>>& points) {
-        auto cmp = [&](const vector<int>& a, const vector<int>& b) {
-            return a[1] < b[1];
+    vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& people) {
+        map<int,int> mp;
+        for (auto& flower : flowers) {
+            mp[flower[0]]++;
+            mp[flower[1]+1]--;
         }
 
-        sort(points.begin(), points.end(), cmp);
+        sort(people.begin(), people.end());
 
-        int res = 1;
-        auto& it = points[0];
-        int n = points.size();
-        for (int k = 1; k < n; k++) {
-            if (points[k][0] > it[1]) {
-                res++;
-                it = points[k];
+        int n = flowers.size();
+        int it = 0;
+        int count = 0;
+        vector<int> res;
+
+        unordered_map<int,int> counter;
+
+        for (auto& p : mp) {
+            while (it < people.size() && people[it] < p.first) {
+                counter[people[it]] = count;
+                it++;
             }
+            count += p.second;
         }
+
+        int last = counter.rbegin()->first;
+        for (int k = 0; k < people.size(); k++) {
+            if (people[k] > last) res.push_back(0);
+            else res.push_back(counter[people[k]]);
+        }
+
         return res;
     }
-};
- 
+}; 
  
  
 int main(){
