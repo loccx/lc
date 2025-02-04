@@ -35,18 +35,19 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    bool carPooling(vector<vector<int>>& trips, int capacity) {
-        map<int,int> mp;
-        for(auto& tr:trips){
-            mp[tr[1]]+=tr[0];
-            mp[tr[2]]-=tr[0];
+    int numberOfPoints(vector<vector<int>>& nums) {
+        vector<int> line(102,0);
+        for (auto& num : nums) {
+            line[num[0]]++;
+            line[num[1]+1]--;
         }
-        int curr=0;
-        for(auto& p:mp){
-            curr+=p.second;
-            if(curr>capacity)return false;
+        int count = 0;
+        int res = 0;
+        for (int k = 1; k <= 100; k++) {
+            count += line[k];
+            if (count > 0) res++;
         }
-        return true;
+        return res;
     }
 };
  
