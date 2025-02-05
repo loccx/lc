@@ -12,7 +12,7 @@ using namespace std;
 #define ed end()
 #define all(x) x.bg,x.ed
 #define sz(x) int(x.size())
- 
+
 using ll = long long;
 typedef pair<int,int> pi;
 typedef pair<double,double> pd;
@@ -22,7 +22,7 @@ template<class t> using VV=V<V<t>>;
 template<class t> using Q=queue<t>;
 template<class t1,class t2> using MP=unordered_map<t1,t2>;
 typedef priority_queue<int> pqi;
- 
+
 const ll M=1e9+7;
 const ll N=2*1e5+10;
 
@@ -35,40 +35,31 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int largestRectangleArea(vector<int>& heights) {
-        int n = heights.size();
+    int largestRectangleArea(vector<int> &height) {
 
-        vector<int> pse(n, -1);
-        vector<int> nse(n, -1);
+        height.push_back(0);
+        int n = height.size();
+        vector<int> inds;
 
-        stack<int> st;
-        for (int k = 0; k < n; k++) {
-            while (!st.empty() && heights[k] < heights[st.top()]) {
-                nse[st.top()] = k;
-                st.pop();
-            }
-            st.push(k);
-        }
-        while (!st.empty() ) st.pop();
-        for (int k = n-1; k >= 0; k--) {
-            while (!st.empty() && heights[k] < heights[st.top()]) {
-                pse[st.top()] = k;
-                st.pop();
-            }
-            st.push(k);
-        }
         int res = 0;
-
         for (int k = 0; k < n; k++) {
-            res = max(res, heights[k] * ((nse[k] == -1 ? n : nse[k]) - pse[k] + 1));
+            while (inds.size() > 0 && height[inds.back()] >= height[k]) {
+                int h = height[inds.back()];
+                inds.pop_back();
+                int diff = inds.size() > 0 ? inds.back() : -1;
+                if (h * (k - diff - 1) > res) {
+                    res = h * (k - diff - 1);
+                }
+            }
+            inds.push_back(k);
         }
-
         return res;
     }
-};
- 
- 
- 
+}; 
+
+
 int main(){
+    vector<int> height = {2, 1, 5, 6, 2, 3};
     Solution s;
+    cout<< s.largestRectangleArea(height) <<endl;
 }
