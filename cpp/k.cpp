@@ -35,25 +35,24 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
-        auto cmp = [&](const vector<int>& a, const vector<int>& b) {
-            return a[1] < b[1];
+    bool areAlmostEqual(string s1, string s2) {
+        bool wrong = false;
+        int n = s1.size();
+        if (s1 == s2) return true;
+
+        int store;
+        for (int k = 0; k < n; k++) {
+            if (s1[k] != s2[k] && !wrong) {
+                store = k;
+                wrong = true;
+            }
+            else if (s1[k] != s2[k] && wrong) {
+                swap(s2[store],s2[k]);
+                if (s1 == s2) return true;
+                else return false;
+            }
         }
-
-        sort(intervals.begin(), intervals.end(), cmp);
-
-        int n = intervals.size();
-        if (n == 1) return 0;
-
-        auto& int = intervals[0];
-
-        int res = 0;
-        for (int k = 1; k < n; k++) {
-            if (intervals[k][0] < int[1]) res++;
-            else int = intervals[k];
-        }
-
-        return res;
+        return false;
     }
 };
  
