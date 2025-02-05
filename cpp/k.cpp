@@ -35,68 +35,20 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    string addBinary(string a, string b) {
-        int n=a.size();
-        int m=b.size();
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        auto cmp = [&](const vector<int>& a, const vector<int>& b) {
+            return a[1] < b[1];
+        }
 
-        string res = "";
+        sort(intervals.begin(), intervals.end(), cmp);
 
-        int it = n-1;
-        int it2 = m-1;
-        bool carry = false;
-        while (it>=0 && it2>=0) {
-            if (carry) {
-                if (a[it] == '0' && b[it2] == '0') {
-                    res = '1' + res;
-                    carry ^= 1;
-                }
-                else if ((a[it] == '0' && b[it2] == '1') || (a[it] == '1' && b[it2] == '0')) {
-                    res = '0' + res;
-                }
-                else if (a[it] == '1' && b[it2] == '1') {
-                    res = '1' + res;
-                }
-            }
-            else { // no carry
-                if (a[it] == '0' && b[it2] == '0') {
-                    res = '0' + res;
-                }
-                else if ((a[it] == '0' && b[it2] == '1') || (a[it] == '1' && b[it2] == '0')) {
-                    res = '1' + res;
-                }
-                else if (a[it] == '1' && b[it2] == '1') {
-                    res = '0' + res;
-                    carry ^= 1;
-                }
-            }
+        int n = intervals.size();
+        if (n == 1) return 0;
+
+        auto& int = intervals[0];
+
+        for (int k = 1; k < n; k++) {
         }
-        while (it >= 0) {
-            if (carry) {
-                if (a[it] == '0') {
-                    res = '1' + res;
-                    carry ^= 1;
-                }
-                else {
-                    res = '0' + res;
-                    carry ^= 1;
-                }
-            }
-            else res = a[it] + res;
-        }
-        while (it2 >= 0) {
-            if (carry) {
-                if (b[it2] == '0') {
-                    res = '1' + res;
-                    carry ^= 1;
-                }
-                else {
-                    res = '0' + res;
-                    carry ^= 1;
-                }
-            }
-            else res = b[it2] + res;
-        }
-        return res;
     }
 };
  
