@@ -35,26 +35,34 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int lengthOfLongestSubstring(string s) {
-        int n = s.size();
-        unordered_set<char> store;
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
 
+        vector<int> pse(n, -1);
+        vector<int> nse(n, -1);
+
+        stack<int> st;
+        for (int k = 0; k < n; k++) {
+            while (!st.empty() && heights[k] < heights[st.top()]) {
+                nse[st.top()] = k;
+                st.pop();
+            }
+            st.push(k);
+        }
+        while (!st.empty() ) st.pop();
+        for (int k = n-1; k >= 0; k--) {
+            while (!st.empty() && heights[k] < heights[st.top()]) {
+                pse[st.top()] = k;
+                st.pop();
+            }
+            st.push(k);
+        }
         int res = 0;
 
-        int l = 0, r = 0;
-        while (r < n) {
-            if (!store.count(s[r])) {
-                store.insert(s[r]);
-                r++;
-                res = max(res,r - l);
-            }
-            else {
-                while (store.count(s[r])) {
-                    store.erase(s[l]);
-                    l++;
-                }
-            }
+        for (int k = 0; k < n; k++) {
+            res = max(res, heights[k] * ((nse[k] == -1 ? n : nse[k]) - pse[k] + 1));
         }
+
         return res;
     }
 };
