@@ -35,24 +35,27 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    bool areAlmostEqual(string s1, string s2) {
-        bool wrong = false;
-        int n = s1.size();
-        if (s1 == s2) return true;
+    int lengthOfLongestSubstring(string s) {
+        int n = s.size();
+        unordered_set<char> store;
 
-        int store;
-        for (int k = 0; k < n; k++) {
-            if (s1[k] != s2[k] && !wrong) {
-                store = k;
-                wrong = true;
+        int res = 0;
+
+        int l = 0, r = 0;
+        while (r < n) {
+            if (!store.count(s[r])) {
+                store.insert(s[r]);
+                r++;
+                res = max(res,r - l);
             }
-            else if (s1[k] != s2[k] && wrong) {
-                swap(s2[store],s2[k]);
-                if (s1 == s2) return true;
-                else return false;
+            else {
+                while (store.count(s[r])) {
+                    store.erase(s[l]);
+                    l++;
+                }
             }
         }
-        return false;
+        return res;
     }
 };
  
