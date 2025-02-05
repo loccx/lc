@@ -47,8 +47,13 @@ public:
 
         auto& int = intervals[0];
 
+        int res = 0;
         for (int k = 1; k < n; k++) {
+            if (intervals[k][0] < int[1]) res++;
+            else int = intervals[k];
         }
+
+        return res;
     }
 };
  
