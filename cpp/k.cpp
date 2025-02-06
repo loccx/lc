@@ -35,26 +35,39 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    int tupleSameProduct(vector<int>& nums) {
-        int n = nums.size();
-        unordered_map<int, int> mp;
-        for (int k = 0; k < n; k++) {
-            for (int a = k + 1; a < n; a++) {
-                int curr = nums[k] * nums[a];
-                mp[curr]++;
+    string reorganizeString(string s) {
+        vector<int> count(26, 0);
+        int maxind = 0;
+        for (char& let : s) {
+            if (++count[let - 'a'] > count[maxind]) {
+                maxind = let - 'a';
             }
         }
 
-        int res = 0;
-        for (auto& p : mp) {
-            if (p.second >= 2) res += p.second * (p.second - 1) * 4;
+        int it = 0;
+        if (2 * count[maxind] - 1 > s.size()) return "";
+
+        while (count[maxind]) {
+            s[it] = maxind + 'a';
+            count[maxind]--;
+            it += 2;
         }
-        return res;
+
+        for (int k = 0; k < 26; k++) {
+            while (count[k]) {
+                if (it >= s.size()) it = 1;
+                s[it] = k + 'a';
+                count[k]--;
+                it += 2;
+            }
+        }
+        return s;
     }
 };
  
  
- 
 int main(){
+    string inp = "aba";
     Solution s;
+    cout << s.reorganizeString(inp) << endl;
 }
