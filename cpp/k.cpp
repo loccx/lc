@@ -37,22 +37,22 @@ class Solution {
 public:
     int tupleSameProduct(vector<int>& nums) {
         int n = nums.size();
-        int count = 0;
-        unordered_map<int,int> mp;
+        unordered_map<int, int> mp;
         for (int k = 0; k < n; k++) {
             for (int a = k + 1; a < n; a++) {
-                if (k != a) {
-                    int curr = nums[k] * nums[a];
-                    mp[curr]++;
-                }
+                int curr = nums[k] * nums[a];
+                mp[curr]++;
             }
         }
+
+        int res = 0;
         for (auto& p : mp) {
-            if (p.second >= 2) count += ((p.second * (p.second-1)) / 2) * 8;
+            if (p.second >= 2) res += p.second * (p.second - 1) * 4;
         }
-        return count;
+        return res;
     }
-}; 
+};
+ 
  
  
 int main(){
