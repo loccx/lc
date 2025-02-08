@@ -33,43 +33,46 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class NumberContainers {
+class Solution {
 public:
-    NumberContainers() {
-        unordered_map<int,priority_queue<int,vector<int>,greater<int>>> mp; // num -> index
-        unordered_map<int,int> indnum; // index -> num
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        int& n = numCourses;
+        vector<vector<int>> adj(n,vector<int>());
+        vector<int> deg(n,0);
+        vector<int> vis(n,false);
+        for (auto& pre : prerequisites) {
+            if (pre[1] == pre[0]) return false;
+            adj[pre[1]].push_back(pre[0]);
+            deg[pre[0]]++;
+        }
+        stack<int> s;
 
-    }
-    
-    void change(int index, int number) {
-        if (!indnum.count(index)) {
-            indnum[index] = number;
-            mp[number].push(index);
+        for (int k = 0; k < n; k++) {
+            if (deg[k] == 0) {
+                s.push(k);
+            }
         }
-        else {
-            mp[indnum[index]].erase(index);
-            indnum[index]=number;
-            mp[number].push(index);
+        if (s.empty()) return false; // no deg 0 courses
+
+        int viscount = 0;
+        while (!s.empty()) {
+            int curr = s.top();
+            s.pop();
+            if (!vis[curr]) {
+                vis[curr] = true;
+                viscount++;
+                for (int& nei : adj[curr]) {
+                    if (--deg[nei] == 0)s.push(nei);
+                }
+            }
+            else return false;
         }
-    }
-    
-    int find(int number) {
-        if (mp.count(number) && mp[number].size()) {
-            return mp[number].front();
-        }
-        else return -1;
+        return viscount == n;
     }
 };
-
-/**
- * Your NumberContainers object will be instantiated and called as such:
- * NumberContainers* obj = new NumberContainers();
- * obj->change(index,number);
- * int param_2 = obj->find(number);
- */
  
  
  
 int main(){
-    NumberContainers nc;
+    Solution s;
 }
