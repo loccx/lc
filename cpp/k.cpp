@@ -33,57 +33,50 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class LRUCache {
+class LRU () {
 public:
+    int capacity;
+    int currsize;
     queue<int> qu;
-    int cap, currsize;
-    vector<int> map;
     vector<int> freq;
+    vector<int> map;
 
-    LRUCache(int cap) {
-        currsize = 0;
-        capacity = cap;
-        map.resize(10001, -1);
-        freq.resize(10001, -1);
+    LRU (int cap) : capacity(cap), currsize(0) {
+        map.resize(1e4+1,-1);
+        freq.resize(1e4+1,-1);
     }
-    
+
     int get(int key) {
-        if (map[key] == -1) {
-            return -1;
-        }
+        if (map[key] == -1) return -1;
 
         qu.push(key);
         freq[key]++;
         return map[key];
     }
-    
-    void put(int key, int value) {
-        if (map[key] == -1) { // key doesnt exist
-            while (currsize >= capacity) { // remove least recently used key
+
+    int put(int key, int value) {
+        if (map[key] == -1) {
+            while (currsize >= capacity) {
                 int fr = qu.front();
                 qu.pop();
-
                 if (freq[fr] == 1) {
-                    map[fr] = -1;
                     currsize--;
+                    map[fr] = -1;
                 }
-
                 freq[fr]--;
+                map[key] = value;
+                qu.push(key);
+                freq[key]=1;
+                currsize++;
             }
-
-            qu.push(key);
-            map[key] = value;
-            freq[key] = 1;
-
-            currsize++;
         }
         else {
-            qu.push(key);
             map[key] = value;
+            qu.push(key);
             freq[key]++;
         }
     }
-};
+}
  
  
  
