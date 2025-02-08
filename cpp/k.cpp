@@ -33,53 +33,43 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class LRU () {
+class NumberContainers {
 public:
-    int capacity;
-    int currsize;
-    queue<int> qu;
-    vector<int> freq;
-    vector<int> map;
+    NumberContainers() {
+        unordered_map<int,priority_queue<int,vector<int>,greater<int>>> mp; // num -> index
+        unordered_map<int,int> indnum; // index -> num
 
-    LRU (int cap) : capacity(cap), currsize(0) {
-        map.resize(1e4+1,-1);
-        freq.resize(1e4+1,-1);
     }
-
-    int get(int key) {
-        if (map[key] == -1) return -1;
-
-        qu.push(key);
-        freq[key]++;
-        return map[key];
-    }
-
-    int put(int key, int value) {
-        if (map[key] == -1) {
-            while (currsize >= capacity) {
-                int fr = qu.front();
-                qu.pop();
-                if (freq[fr] == 1) {
-                    currsize--;
-                    map[fr] = -1;
-                }
-                freq[fr]--;
-                map[key] = value;
-                qu.push(key);
-                freq[key]=1;
-                currsize++;
-            }
+    
+    void change(int index, int number) {
+        if (!indnum.count(index)) {
+            indnum[index] = number;
+            mp[number].push(index);
         }
         else {
-            map[key] = value;
-            qu.push(key);
-            freq[key]++;
+            mp[indnum[index]].erase(index);
+            indnum[index]=number;
+            mp[number].push(index);
         }
     }
-}
+    
+    int find(int number) {
+        if (mp.count(number) && mp[number].size()) {
+            return mp[number].front();
+        }
+        else return -1;
+    }
+};
+
+/**
+ * Your NumberContainers object will be instantiated and called as such:
+ * NumberContainers* obj = new NumberContainers();
+ * obj->change(index,number);
+ * int param_2 = obj->find(number);
+ */
  
  
  
 int main(){
-    Solution s;
+    NumberContainers nc;
 }
