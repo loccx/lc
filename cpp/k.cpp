@@ -35,26 +35,33 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    string removeOccurrences(string s, string part) {
-        string copy = s;
-        int n = s.size();
-        int m = part.size();
-        int it = 0;
-
-        for(int k = 0; k < n; k++) {
-            copy[it++] = s[k];
-            if (it >= m && copy.substr(it - m, m) == part) {
-                it -= m;
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode* dummy = new ListNode();
+        auto cmp = [](ListNode* a, ListNode* b) {
+            return a->val > b->val;
+        };
+        priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> pq(cmp);
+        for (auto list : lists) {
+            ListNode* curr = list;
+            while (curr != nullptr) {
+                pq.push(curr);
+                curr = curr->next;
             }
         }
-        return copy.substr(0, it);
+        ListNode* curr = dummy;
+        while (!pq.empty()) {
+            ListNode* next = new ListNode(pq.top()->val);
+            curr->next = next;
+            curr = curr->next;
+            pq.pop();
+        }
+        return dummy->next;
     }
 };
+
+ 
  
  
 int main(){
-    string inp = "daabcbaabcbc";
-    string part = "abc";
     Solution s;
-    cout << s.removeOccurrences(inp,part) << endl;
 }
