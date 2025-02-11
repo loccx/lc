@@ -35,20 +35,26 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    long long countBadPairs(vector<int>& nums) {
-        long long res;
-        long long n = nums.size();
-        unordered_map<int,int> mp;
-        long long goodpairs = 0;
-        for (int k = 0; k < n; k++) {
-            goodpairs += mp[nums[k] - k];
-            mp[nums[k] - k]++;
+    string removeOccurrences(string s, string part) {
+        string copy = s;
+        int n = s.size();
+        int m = part.size();
+        int it = 0;
+
+        for(int k = 0; k < n; k++) {
+            copy[it++] = s[k];
+            if (it >= m && copy.substr(it - m, m) == part) {
+                it -= m;
+            }
         }
-        return n * (n - 1) / 2 - goodpairs;
+        return copy.substr(0, it);
     }
-}; 
+};
  
  
 int main(){
+    string inp = "daabcbaabcbc";
+    string part = "abc";
     Solution s;
+    cout << s.removeOccurrences(inp,part) << endl;
 }
