@@ -35,42 +35,18 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        int& n = numCourses;
-        vector<vector<int>> adj(n,vector<int>());
-        vector<int> deg(n,0);
-        vector<int> vis(n,false);
-        for (auto& pre : prerequisites) {
-            if (pre[1] == pre[0]) return false;
-            adj[pre[1]].push_back(pre[0]);
-            deg[pre[0]]++;
-        }
-        stack<int> s;
-
+    long long countBadPairs(vector<int>& nums) {
+        long long res;
+        long long n = nums.size();
+        unordered_map<int,int> mp;
+        long long goodpairs = 0;
         for (int k = 0; k < n; k++) {
-            if (deg[k] == 0) {
-                s.push(k);
-            }
+            goodpairs += mp[nums[k] - k];
+            mp[nums[k] - k]++;
         }
-        if (s.empty()) return false; // no deg 0 courses
-
-        int viscount = 0;
-        while (!s.empty()) {
-            int curr = s.top();
-            s.pop();
-            if (!vis[curr]) {
-                vis[curr] = true;
-                viscount++;
-                for (int& nei : adj[curr]) {
-                    if (--deg[nei] == 0)s.push(nei);
-                }
-            }
-            else return false;
-        }
-        return viscount == n;
+        return n * (n - 1) / 2 - goodpairs;
     }
-};
- 
+}; 
  
  
 int main(){
