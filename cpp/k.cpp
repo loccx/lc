@@ -34,32 +34,29 @@ const static auto fast=[]{
 }();
 //solution class
 class Solution {
-public:
-    ListNode* mergeKLists(vector<ListNode*>& lists) {
-        ListNode* dummy = new ListNode();
-        auto cmp = [](ListNode* a, ListNode* b) {
-            return a->val > b->val;
-        };
-        priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> pq(cmp);
-        for (auto list : lists) {
-            ListNode* curr = list;
-            while (curr != nullptr) {
-                pq.push(curr);
-                curr = curr->next;
+    public:
+        int trap(vector<int>& height) {
+            int n = height.size();
+            int l = 0;
+            int r = n - 1;
+            int maxl = 0;
+            int maxr = 0;
+            int res = 0;
+            while (l < r) {
+                if (height[l] < height[r]) {
+                    if (height[l] > maxl) maxl = height[l];
+                    else res += (maxl - height[l]);
+                    l++;
+                }
+                else {
+                    if (height[r] > maxr) maxr = height[r];
+                    else res += (maxr - height[r]);
+                    r--;
+                }
             }
+            return res;
         }
-        ListNode* curr = dummy;
-        while (!pq.empty()) {
-            ListNode* next = new ListNode(pq.top()->val);
-            curr->next = next;
-            curr = curr->next;
-            pq.pop();
-        }
-        return dummy->next;
-    }
 };
-
- 
  
  
 int main(){
