@@ -34,29 +34,31 @@ const static auto fast=[]{
 }();
 //solution class
 class Solution {
-    public:
-        int trap(vector<int>& height) {
-            int n = height.size();
-            int l = 0;
-            int r = n - 1;
-            int maxl = 0;
-            int maxr = 0;
-            int res = 0;
-            while (l < r) {
-                if (height[l] < height[r]) {
-                    if (height[l] > maxl) maxl = height[l];
-                    else res += (maxl - height[l]);
-                    l++;
-                }
-                else {
-                    if (height[r] > maxr) maxr = height[r];
-                    else res += (maxr - height[r]);
-                    r--;
-                }
-            }
-            return res;
+public:
+    int dig(int k) {
+        int dig = 0;
+        while (k > 0) {
+            dig += k % 10;
+            k /= 10;
         }
+        return dig;
+    }
+    int maximumSum(vector<int>& nums) {
+        unordered_map<int,int> mp;
+        int n = nums.size();
+        int res = 0;
+        for (int k = 0; k < n; k++) {
+            int curr = dig(nums[k]);
+            if (mp.count(curr)) {
+                if (mp[curr] + nums[k] > res) res = mp[curr] + nums[k];
+                if (nums[k] > mp[curr]) mp[curr] = nums[k];
+            }
+            else mp[curr] = nums[k];
+        }
+        return res ? res : -1;
+    }
 };
+ 
  
  
 int main(){
