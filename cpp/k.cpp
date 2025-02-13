@@ -39,48 +39,38 @@ public:
         int n = mat.size();
         int m = mat[0].size();
 
-        vector<int> res(n * m);
-        int it = 0;
+        vector<int> res;
 
         int r = 0;
         int c = 0;
 
-        res[it] = mat[r][c];
-        it++;
-
         bool up = true;
-        while (it < res.size()) {
+        while (res.size() < n * m) {
             if (up) {
-                c++;
-                while (c != 0 && r != n-1) {
-                    if (c < m) {
-                        res[it] = mat[r][c];
-                        it++;
-                    }
-                    r++;
-                    c--;
-                }
-            }
-            else {
-                r++;
-                while (r != 0 && c != m - 1) {
-                    if (r < n) {
-                        res[it] = mat[r][c];
-                        it++;
-                    }
+                while (r > 0 && c < m - 1) {
+                    res.push_back(mat[r][c]);
                     r--;
                     c++;
                 }
+                res.push_back(mat[r][c]);
+                if (c == m - 1) r++;
+                else c++;
             }
-            res[it] = mat[r][c];
-            it++;
+            else {
+                while (c > 0 && r < n - 1) {
+                    res.push_back(mat[r][c]);
+                    r++;
+                    c--;
+                }
+                res.push_back(mat[r][c]);
+                if (r == n - 1) c++;
+                else r++;
+            }
             up ^= 1;
         }
-
         return res;
     }
 };
-
  
  
  
