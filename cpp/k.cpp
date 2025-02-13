@@ -33,23 +33,64 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class Solution {
-public:
-    int numTilings(int n) {
-        if (n < 3) return n;
-        vector<int> dp(n + 1);
-        dp[1] = 1;
-        dp[2] = 2;
-        dp[3] = 5;
-        for (int k = 4; k < n + 1; k++) {
-            dp[k] = ((dp[k-1] * 2) % 1000000007 + dp[k-3]) % 1000000007;
+vector<vector<char>> falling(vector<vector<char>> grid) {
+    int m = grid.size();
+    int n = grid[0].size();
+
+    int min_d = INT_MAX;
+    for (int c = 0; c < n; c++) {
+        int it = 0;
+        while (it < m) {
+            int d = 0;
+            while (it < m && grid[it][c] != 'F') {
+                it++;
+            }
+            it++;
+            while (it < m && grid[it][c] == '-') {
+                d++;
+                it++;
+            }
+            if (it < m && grid[it][c] == 'F') continue;
+            else if (it < m && grid[it][c] == '#' && d < min_d) {
+                min_d = d;
+            }
+            else if (it == m && d < min_d) {
+                min_d = d;
+            }
         }
-        return dp[n];
     }
-};
+    for (int c = 0; c < n; c++) {
+        for (int r = m-1; r >= 0; r--) {
+            if (grid[r][c] == 'F') {
+                grid[r + min_d][c] = 'F';
+                grid[r][c] = '-';
+            }
+        }
+    }
+
+    return grid;
+}
+
+void pg(vector<vector<char>> gr) {
+    for (auto& g : gr) {
+        for (auto& c : g) {
+            cout << c << ' ';
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
  
- 
- 
-int main(){
-    Solution s;
+int main() {
+    vector<vector<char>> grid = {
+        {'F', 'F', 'F', 'F', 'F'},
+        {'-', '-', 'F', '-', '-'},
+        {'-', '-', 'F', '-', '-'},
+        {'-', 'F', 'F', '-', '-'},
+        {'-', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', '-'},
+        {'-', '-', '-', '-', '-'}
+    };
+
+    pg(falling(grid));
 }
