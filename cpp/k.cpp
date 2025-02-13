@@ -35,40 +35,16 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    vector<int> findDiagonalOrder(vector<vector<int>>& mat) {
-        int n = mat.size();
-        int m = mat[0].size();
-
-        vector<int> res;
-
-        int r = 0;
-        int c = 0;
-
-        bool up = true;
-        while (res.size() < n * m) {
-            if (up) {
-                while (r > 0 && c < m - 1) {
-                    res.push_back(mat[r][c]);
-                    r--;
-                    c++;
-                }
-                res.push_back(mat[r][c]);
-                if (c == m - 1) r++;
-                else c++;
-            }
-            else {
-                while (c > 0 && r < n - 1) {
-                    res.push_back(mat[r][c]);
-                    r++;
-                    c--;
-                }
-                res.push_back(mat[r][c]);
-                if (r == n - 1) c++;
-                else r++;
-            }
-            up ^= 1;
+    int numTilings(int n) {
+        if (n < 3) return n;
+        vector<int> dp(n + 1);
+        dp[1] = 1;
+        dp[2] = 2;
+        dp[3] = 5;
+        for (int k = 4; k < n + 1; k++) {
+            dp[k] = ((dp[k-1] * 2) % 1000000007 + dp[k-3]) % 1000000007;
         }
-        return res;
+        return dp[n];
     }
 };
  
