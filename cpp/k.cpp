@@ -36,64 +36,28 @@ const static auto fast=[]{
 class Solution {
 public:
     string multiply(string num1, string num2) {
-        string res;
-        vector<string> nums;
-        if (num1 == "0" || num2 == "0") return "0";
-        if (num1.size() < num2.size())
-            swap(num1, num2);
-
         int n = num1.size();
         int m = num2.size();
+        vector<int> a(n + m, 0);
 
-        int bigsum = 0;
-        int mult = 0;
-        for (int x = m-1; x >= 0; x--) {
-            int carry = 0;
-            string sum = "";
-            for (int k = n-1; k >= 0; k--) {
-                int top = num1[k] - '0';
-                int bot = num2[x] - '0';
-
-                int prod = top * bot + carry;
-
-                if (prod > 9) carry = prod / 10;
-                else carry = 0;
-                char dig = (prod % 10) + '0';
-                sum.insert(0, 1, dig);
+        for (int k = n-1; k >= 0; k--) {
+            for (int x = m-1; x >= 0; x--) {
+                int sum = (num1[k] - '0') * (num2[x] - '0') + a[k + x + 1];
+                a[k + x + 1] = sum % 10;
+                a[k + x] += sum / 10;
             }
-            if (carry)
-                sum.insert(0, 1, (carry + '0'));
-            for (int m = 0; m < mult; m++) sum += '0';
-            mult++;
-            nums.push_back(sum);
-        }
-        int f = nums.size();
-        if (f == 1) return nums[0];
-
-        string curr = nums[0];
-
-        for (int k = 1; k < f; k++) {
-            if (curr.size() < nums[k].size()) swap(curr, nums[k]);
-            int carry = 0;
-            int ci = curr.size() - 1;
-            int ni = nums[k].size() - 1;
-            while (ni >= 0) {
-                int sum = (nums[k][ni] - '0') + (curr[ci] - '0') + carry;
-                carry = sum / 10;
-                curr[ci] = (sum % 10) + '0';
-                ni--;
-                ci--;
-            }
-            while (carry && ci >= 0) {
-                int sum = (curr[ci] - '0') + carry;
-                carry = sum / 10;
-                curr[ci] = (sum % 10) + '0';
-                ci--;
-            }
-            if (carry) curr.insert(0, 1, '1');
         }
 
-        return curr;
+        string res = "";
+        bool skip = true;
+        for (int k = 0; k < n + m; k++) {
+            cout << a[k] << ' ';
+            if (a[k] == 0 && skip) continue;
+            skip = false;
+            res += a[k] + '0';
+        }
+        cout << endl;
+        return res;
     }
 };
  
@@ -101,7 +65,7 @@ public:
  
 int main(){
     string num1 = "123";
-    string num2 = "4567";
+    string num2 = "456";
     Solution s;
-    s.multiply(num1, num2);
+    cout << s.multiply(num1, num2) << endl;
 }
