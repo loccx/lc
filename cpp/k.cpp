@@ -33,32 +33,54 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-
 class Solution {
 public:
-    int minOperations(vector<int>& nums, int k) {
-        int n = nums.size();
+    vector<int> findDiagonalOrder(vector<vector<int>>& mat) {
+        int n = mat.size();
+        int m = mat[0].size();
 
-        priority_queue<long long, vector<long long>, greater<long long>> pq;
-        for (int x = 0; x < n; x++) {
-            pq.push(nums[x]);
-        }
-        int op = 0;
-        while (pq.size() >= 2) {
-            long long m = pq.top();
-            pq.pop();
-            if (m >= k)
-                return op;
-            long long  m2 = pq.top();
-            pq.pop();
-            long long curr = min(m, m2) * 2 + max(m, m2);
-            pq.push(curr);
-            op++;
+        vector<int> res(n * m);
+        int it = 0;
+
+        int r = 0;
+        int c = 0;
+
+        res[it] = mat[r][c];
+        it++;
+
+        bool up = true;
+        while (it < res.size()) {
+            if (up) {
+                c++;
+                while (c != 0 && r != n-1) {
+                    if (c < m) {
+                        res[it] = mat[r][c];
+                        it++;
+                    }
+                    r++;
+                    c--;
+                }
+            }
+            else {
+                r++;
+                while (r != 0 && c != m - 1) {
+                    if (r < n) {
+                        res[it] = mat[r][c];
+                        it++;
+                    }
+                    r--;
+                    c++;
+                }
+            }
+            res[it] = mat[r][c];
+            it++;
+            up ^= 1;
         }
 
-        return op;
+        return res;
     }
 };
+
  
  
  
