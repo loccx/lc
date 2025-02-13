@@ -33,29 +33,30 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
+
 class Solution {
 public:
-    int dig(int k) {
-        int dig = 0;
-        while (k > 0) {
-            dig += k % 10;
-            k /= 10;
-        }
-        return dig;
-    }
-    int maximumSum(vector<int>& nums) {
-        unordered_map<int,int> mp;
+    int minOperations(vector<int>& nums, int k) {
         int n = nums.size();
-        int res = 0;
-        for (int k = 0; k < n; k++) {
-            int curr = dig(nums[k]);
-            if (mp.count(curr)) {
-                if (mp[curr] + nums[k] > res) res = mp[curr] + nums[k];
-                if (nums[k] > mp[curr]) mp[curr] = nums[k];
-            }
-            else mp[curr] = nums[k];
+
+        priority_queue<long long, vector<long long>, greater<long long>> pq;
+        for (int x = 0; x < n; x++) {
+            pq.push(nums[x]);
         }
-        return res ? res : -1;
+        int op = 0;
+        while (pq.size() >= 2) {
+            long long m = pq.top();
+            pq.pop();
+            if (m >= k)
+                return op;
+            long long  m2 = pq.top();
+            pq.pop();
+            long long curr = min(m, m2) * 2 + max(m, m2);
+            pq.push(curr);
+            op++;
+        }
+
+        return op;
     }
 };
  
