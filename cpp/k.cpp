@@ -25,7 +25,6 @@ typedef priority_queue<int> pqi;
  
 const ll M=1e9+7;
 const ll N=2*1e5+10;
-
 const static auto fast=[]{
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
@@ -33,39 +32,40 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class Solution {
+class ProductOfNumbers {
 public:
-    string multiply(string num1, string num2) {
-        int n = num1.size();
-        int m = num2.size();
-        vector<int> a(n + m, 0);
-
-        for (int k = n-1; k >= 0; k--) {
-            for (int x = m-1; x >= 0; x--) {
-                int sum = (num1[k] - '0') * (num2[x] - '0') + a[k + x + 1];
-                a[k + x + 1] = sum % 10;
-                a[k + x] += sum / 10;
-            }
+    vector<int> prod;
+    ProductOfNumbers() {
+        prod.push_back(1);
+    }
+   
+    void add(int num) {
+        int n = prod.size();
+        if (num == 0) {
+            prod.clear();
+            prod.push_back(1);
         }
-
-        string res = "";
-        bool skip = true;
-        for (int k = 0; k < n + m; k++) {
-            cout << a[k] << ' ';
-            if (a[k] == 0 && skip) continue;
-            skip = false;
-            res += a[k] + '0';
+        else {
+            prod.push_back(prod.back() * num);
         }
-        cout << endl;
-        return res;
+    }
+    
+    int getProduct(int k) {
+        if (k >= prod.size()) {
+            return 0;
+        }
+        return prod[prod.size() - 1] / prod[prod.size() - k - 1];
     }
 };
- 
+
+/**
+ * Your ProductOfNumbers object will be instantiated and called as such:
+ * ProductOfNumbers* obj = new ProductOfNumbers();
+ * obj->add(num);
+ * int param_2 = obj->getProduct(k);
+ */ 
  
  
 int main(){
-    string num1 = "123";
-    string num2 = "456";
     Solution s;
-    cout << s.multiply(num1, num2) << endl;
 }
