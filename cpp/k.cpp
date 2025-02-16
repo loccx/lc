@@ -25,6 +25,7 @@ typedef priority_queue<int> pqi;
  
 const ll M=1e9+7;
 const ll N=2*1e5+10;
+
 const static auto fast=[]{
     std::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);
@@ -32,38 +33,45 @@ const static auto fast=[]{
     return 0;
 }();
 //solution class
-class ProductOfNumbers {
+class Solution {
 public:
-    vector<int> prod;
-    ProductOfNumbers() {
-        prod.push_back(1);
+    vector<int> constructDistancedSequence(int n) {
+        vector<int> res(2 * n - 1, 0);
+        vector<bool> vis(n + 1, false);
+        bt(res, vis, n, 0);
+        return res;
     }
-   
-    void add(int num) {
-        int n = prod.size();
-        if (num == 0) {
-            prod.clear();
-            prod.push_back(1);
+
+    bool bt(vector<int>& res, vector<bool>& vis, int n, int ind) {
+        while (ind < res.size() && res[ind] != 0) ind++;
+        if (ind == res.size()) {
+            return true;
         }
-        else {
-            prod.push_back(prod.back() * num);
+
+        for (int k = n; k >= 1; k--) {
+            if (vis[k]) continue;
+
+            if (ind < res.size() && k == 1) {
+                res[ind] = 1;
+                vis[1] = true;
+                if (bt(res, vis, n, ind + 1)) return true;
+                res[ind] = 0;
+                vis[1] = false;
+            }
+            else if (ind + k <= res.size() - 1 && res[ind + k] == 0) {
+                res[ind] = k;
+                res[ind + k] = k;
+                vis[k] = true;
+                if (bt(res, vis, n, ind + 1)) return true;
+                res[ind] = 0;
+                res[ind + k] = 0;
+                vis[k] = false;
+            }
         }
-    }
-    
-    int getProduct(int k) {
-        if (k >= prod.size()) {
-            return 0;
-        }
-        return prod[prod.size() - 1] / prod[prod.size() - k - 1];
+        return false;
     }
 };
-
-/**
- * Your ProductOfNumbers object will be instantiated and called as such:
- * ProductOfNumbers* obj = new ProductOfNumbers();
- * obj->add(num);
- * int param_2 = obj->getProduct(k);
- */ 
+ 
  
  
 int main(){
