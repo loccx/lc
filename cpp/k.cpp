@@ -35,40 +35,28 @@ const static auto fast=[]{
 //solution class
 class Solution {
 public:
-    vector<int> constructDistancedSequence(int n) {
-        vector<int> res(2 * n - 1, 0);
-        vector<bool> vis(n + 1, false);
-        bt(res, vis, n, 0);
-        return res;
+    int numTilePossibilities(string tiles) {
+        int res = 0;
+        int n = tiles.size();
+        unordered_map<char, int> count;
+        for (int k = 0; k < n; k++) {
+            count[tiles[k]]++;
+        }
+
+        bt(count, res, 0, n);
+        return res - 1;
     }
 
-    bool bt(vector<int>& res, vector<bool>& vis, int n, int ind) {
-        while (ind < res.size() && res[ind] != 0) ind++;
-        if (ind == res.size()) {
-            return true;
-        }
-
-        for (int k = n; k >= 1; k--) {
-            if (vis[k]) continue;
-
-            if (ind < res.size() && k == 1) {
-                res[ind] = 1;
-                vis[1] = true;
-                if (bt(res, vis, n, ind + 1)) return true;
-                res[ind] = 0;
-                vis[1] = false;
-            }
-            else if (ind + k <= res.size() - 1 && res[ind + k] == 0) {
-                res[ind] = k;
-                res[ind + k] = k;
-                vis[k] = true;
-                if (bt(res, vis, n, ind + 1)) return true;
-                res[ind] = 0;
-                res[ind + k] = 0;
-                vis[k] = false;
+    void bt(unordered_map<char, int>& count, int& res, int k, int n) {
+        res++;
+        if (k == n) return;
+        for (auto& p : count) {
+            if (p.second > 0) {
+                count[p.first]--;
+                bt(count, res, k + 1, n);
+                count[p.first]++;
             }
         }
-        return false;
     }
 };
  
